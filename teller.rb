@@ -2,8 +2,8 @@ require "./bank_data.rb"
 
 BILL_DENOMS = [100,50,20,10,5,1]
 COIN_DENOMS = [50,25,10,5,1]
-BILL_NAMES = {100=>"Hundreds",50=>"Fiftys",20=>"Twentys",10=>"Tens",5=>"Fives",1=>"Ones"}
-COIN_NAMES = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Pennys"}
+BILL_NAMES  = {100=>"Hundreds",50=>"Fiftys",20=>"Twentys",10=>"Tens",5=>"Fives",1=>"Ones"}
+COIN_NAMES  = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Pennys"}
 
 class Teller
 

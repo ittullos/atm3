@@ -8,11 +8,11 @@ class Menu
   end
 
   def main_menu
-    puts "\nPlease enter a menu selection: "
-    puts "\n1 - Check your balance"
-    puts "\n2 - Make a withdrawal"
-    puts "\n3 - Make a deposit"
-    puts "\n4 - Exit"
+    puts  "\nPlease enter a menu selection: "
+    puts  "\n1 - Check your balance"
+    puts  "\n2 - Make a withdrawal"
+    puts  "\n3 - Make a deposit"
+    puts  "\n4 - Exit"
     print "\n  => "
     @user_input = gets.chomp
   end

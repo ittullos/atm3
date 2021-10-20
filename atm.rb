@@ -1,9 +1,9 @@
 require "./teller.rb"
 require "./menu.rb"
 
-menu = Menu.new
-menu.greeting
+menu   = Menu.new
 teller = Teller.new(menu)
+menu.greeting
 
 until menu.user_input == "4"
 
