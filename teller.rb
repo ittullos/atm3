@@ -17,16 +17,12 @@ class Teller
   end
 
   def show_balance
-    puts "\nYour account balance is: $" + @bank_data.balance
+    puts "\nYour account balance is: $" + @bank_data.balance.to_s
   end
 
   def make_deposit
-    hash = @bank_data.accounts
-    amount = @menu.deposit_prompt.to_f
-    bal = hash[@bank_data.name].to_f
-    bal += amount
-    hash[@bank_data.name] = bal.round(2).to_s
-    @bank_data.write_new_balance(hash)
+    amount = @menu.deposit_prompt
+    @bank_data.deposit_funds(amount)
   end
 
   def make_withdrawal
