@@ -8,13 +8,12 @@ COIN_NAMES = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Penny
 class Teller
 
   def initialize(menu)
-    @bank_data = BankData.new
-    @tell_prompt = menu
-    @bank_data.get_data
+    @bank_data = BankData.new(menu.name_input)
+    @menu = menu
+  end
 
-    until @bank_data.isvalid?
-      @bank_data.get_data
-    end
+  def customer_valid?
+    @bank_data.is_valid?
   end
 
   def show_balance
@@ -22,8 +21,8 @@ class Teller
   end
 
   def make_deposit
-    hash = @bank_data.data_hash
-    amount = @tell_prompt.deposit_prompt.to_f
+    hash = @bank_data.accounts
+    amount = @menu.deposit_prompt.to_f
     bal = hash[@bank_data.name].to_f
     bal += amount
     hash[@bank_data.name] = bal.round(2).to_s
@@ -31,15 +30,15 @@ class Teller
   end
 
   def make_withdrawal
-    hash = @bank_data.data_hash
-    amount = @tell_prompt.withdraw_prompt.to_f
+    hash = @bank_data.accounts
+    amount = @menu.withdraw_prompt.to_f
     bal = hash[bank_data.name].to_f
     if bal >= amount
       @bills = amount.floor
       @coins = (amount % @bills) * 100
       bill_hash = dispense(bills, BILL_DENOMS)
       coin_hash = dispense(coins, COIN_DENOMS)
-      @tell_prompt.withdraw_output(bill_hash, coin_hash, BILL_NAMES, COIN_NAMES)
+      @menu.withdraw_output(bill_hash, coin_hash, BILL_NAMES, COIN_NAMES)
       bal -= amount
       hash[bank_data.name] = bal.round(2).to_s
       @bank_data.write_new_balance(hash)
@@ -49,7 +48,7 @@ class Teller
   end
 
   private
-  attr_accessor :bills, :coins, :bank_data, :tell_prompt
+  attr_accessor :bills, :coins, :bank_data, :menu
 
   def dispense(amount, denominations)
     data = denominations.inject({}) do |hash, denomination|

@@ -3,21 +3,18 @@ require 'json'
 FILE_PATH = "./tullos_bank.json"
 
 class BankData
-  attr_accessor :name, :balance, :data_hash
+  attr_accessor :name, :balance, :accounts
 
-  def get_data
-    print "\nPlease enter your name: "
-    @data_hash = JSON.parse(File.read(FILE_PATH))
-    @name = gets.chomp
-    @balance = @data_hash[@name]
+  def initialize(customer_name)
+    @accounts = JSON.parse(File.read(FILE_PATH))
+    @name = customer_name
+    @balance = @accounts[customer_name]
   end
 
-  def isvalid?
-    if @data_hash[@name]
+  def is_valid?
+    if balance
       true
     else
-      puts "\nSorry, we could not find an account with that name.."
-      puts "Did you misspell your login name?"
       false
     end
   end

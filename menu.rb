@@ -1,10 +1,19 @@
 BANK_NAME = "Tullos Bank"
 
 class Menu
-  attr_accessor :user_input
+  attr_reader :name_input, :menu_selection
 
   def greeting
     puts "\nWelcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
+  end
+
+  def get_name
+    print "\nPlease enter your name: "
+    @name_input = gets.chomp
+  end
+
+  def reprimand_customer
+    puts "That name is invalid.. Please try again."
   end
 
   def main_menu
@@ -14,7 +23,7 @@ class Menu
     puts "\n3 - Make a deposit"
     puts "\n4 - Exit"
     print "\n  => "
-    @user_input = gets.chomp
+    @menu_selection = gets.chomp
   end
 
   def goodbye
