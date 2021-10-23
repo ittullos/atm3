@@ -5,16 +5,14 @@ menu = Menu.new
 menu.greeting
 menu.get_name
 teller = Teller.new(menu)
+
 until teller.customer_valid?
   menu.reprimand_customer
   menu.get_name
 end
 
-
 until menu.menu_selection == "4"
-
   menu.main_menu
-
   case menu.menu_selection
   when "1"
     teller.show_balance
