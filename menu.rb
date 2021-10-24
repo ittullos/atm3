@@ -54,4 +54,20 @@ class Menu
       end
     end
   end
+
+  def invalid_menu_selection
+    puts "Invalid menu selection. Please try again.."
+  end
+
+  def new_account_balance(new_balance)
+    puts "\nYour new balance is: $#{new_balance}"
+  end
+
+  def show_account_balance(balance)
+    puts "\nYour account balance is: $" + balance.to_s
+  end
+
+  def insuff_funds
+    puts "Insufficient funds. Please try again.."
+  end
 end

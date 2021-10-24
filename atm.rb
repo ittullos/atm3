@@ -24,6 +24,6 @@ until menu.menu_selection == "4"
     menu.goodbye
     break
   else
-    puts "Invalid menu selection. Please try again.."
+    menu.invalid_menu_selection
   end
 end

@@ -12,20 +12,20 @@ class Teller
   end
 
   def show_balance
-    puts "\nYour account balance is: $" + @bank_data.balance.to_s
+    menu.show_account_balance(bank_data.balance)
   end
 
   def make_deposit
     amount = @menu.deposit_prompt
-    @bank_data.deposit_funds(amount)
+    @bank_data.deposit_funds(amount, menu)
   end
 
   def make_withdrawal
     amount = menu.withdraw_prompt
-    if @bank_data.balance.to_f > amount.to_f
-      @bank_data.withdraw_funds(amount, menu)
+    if bank_data.balance.to_f > amount.to_f
+      bank_data.withdraw_funds(amount, menu)
     else
-      puts "Insufficient funds. Please try again.."
+      menu.insuff_funds
     end
   end
 

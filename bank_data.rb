@@ -27,9 +27,9 @@ class BankData
     end
   end
 
-  def deposit_funds(amount)
+  def deposit_funds(amount, menu)
     new_balance = balance.to_f + amount.to_f
-    write_new_balance(new_balance.to_s)
+    write_new_balance(new_balance.to_s, menu)
   end
 
   def withdraw_funds(amount, menu)
@@ -40,12 +40,12 @@ class BankData
     coin_amounts = cash_dispenser.dispense(coins, COIN_DENOMS)
     menu.withdraw_output(bill_amounts, coin_amounts, BILL_NAMES, COIN_NAMES)
     new_balance = balance.to_f - amount.to_f
-    write_new_balance(new_balance.to_s)
+    write_new_balance(new_balance.to_s, menu)
   end
 
-  def write_new_balance(new_balance)
+  def write_new_balance(new_balance, menu)
     accounts[name] = new_balance
-    puts "\nYour new balance is: $#{accounts[name]}"
+    menu.new_account_balance(new_balance)
     File.open(FILE_PATH, 'w') do |file|
       file.write(accounts.to_json)
     end
