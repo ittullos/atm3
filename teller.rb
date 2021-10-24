@@ -8,7 +8,7 @@ class Teller
   end
 
   def customer_valid?
-    @bank_data.is_valid?
+    bank_data.is_valid?
   end
 
   def show_balance
@@ -16,8 +16,8 @@ class Teller
   end
 
   def make_deposit
-    amount = @menu.deposit_prompt
-    @bank_data.deposit_funds(amount, menu)
+    amount = menu.deposit_prompt
+    bank_data.deposit_funds(amount, menu)
   end
 
   def make_withdrawal

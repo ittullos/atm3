@@ -1,4 +1,6 @@
 BANK_NAME = "Tullos Bank"
+BILL_NAMES = {100=>"Hundreds",50=>"Fiftys",20=>"Twentys",10=>"Tens",5=>"Fives",1=>"Ones"}
+COIN_NAMES = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Pennys"}
 
 class Menu
   attr_reader :name_input, :menu_selection
@@ -40,17 +42,17 @@ class Menu
     gets.chomp
   end
 
-  def withdraw_output(bills, coins, bill_names, coin_names)
+  def withdraw_output(bills, coins)
     puts "\nDispensing cash..."
     bills.each do |denom, quantity|
       if quantity > 0
-        puts "#{bill_names[denom]} -> #{quantity}"
+        puts "#{BILL_NAMES[denom]} -> #{quantity}"
       end
     end
     puts "\nDispensing coins..."
     coins.each do |denom, quantity|
       if quantity > 0
-        puts "#{coin_names[denom]} -> #{quantity}"
+        puts "#{COIN_NAMES[denom]} -> #{quantity}"
       end
     end
   end
