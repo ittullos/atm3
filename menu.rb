@@ -1,6 +1,7 @@
 BANK_NAME = "Tullos Bank"
-BILL_NAMES = {100=>"Hundreds",50=>"Fiftys",20=>"Twentys",10=>"Tens",5=>"Fives",1=>"Ones"}
-COIN_NAMES = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Pennys"}
+DENOM_NAMES = {10000=>"Hundreds",5000=>"Fiftys",2000=>"Twentys",1000=>"Tens",
+               500=>"Fives",100=>"Ones",50=>"Half Dollars",25=>"Quarters",
+               10=>"Dimes",5=>"Nickels",1=>"Pennys"}
 
 class Menu
   attr_reader :name_input, :menu_selection
@@ -14,7 +15,7 @@ class Menu
     @name_input = gets.chomp
   end
 
-  def reprimand_customer
+  def invalid_customer
     puts "That name is invalid.. Please try again."
   end
 
@@ -42,17 +43,11 @@ class Menu
     gets.chomp
   end
 
-  def withdraw_output(bills, coins)
+  def withdraw_output(amounts)
     puts "\nDispensing cash..."
-    bills.each do |denom, quantity|
+    amounts.each do |denom, quantity|
       if quantity > 0
-        puts "#{BILL_NAMES[denom]} -> #{quantity}"
-      end
-    end
-    puts "\nDispensing coins..."
-    coins.each do |denom, quantity|
-      if quantity > 0
-        puts "#{COIN_NAMES[denom]} -> #{quantity}"
+        puts "#{DENOM_NAMES[denom]} -> #{quantity}"
       end
     end
   end

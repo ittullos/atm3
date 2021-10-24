@@ -7,7 +7,7 @@ menu.get_name
 teller = Teller.new(menu)
 
 until teller.customer_valid?
-  menu.reprimand_customer
+  menu.invalid_customer
   menu.get_name
 end
 

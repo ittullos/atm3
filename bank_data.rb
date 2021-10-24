@@ -2,11 +2,9 @@ require "./cash_dispenser.rb"
 require 'json'
 
 FILE_PATH = "./tullos_bank.json"
-BILL_DENOMS = [100,50,20,10,5,1]
-COIN_DENOMS = [50,25,10,5,1]
+DENOMINATIONS = [10000,5000,2000,1000,500,100,50,25,10,5,1]
 
 class BankData
-  attr_accessor :name, :accounts
 
   def initialize(customer_name)
     @accounts = JSON.parse(File.read(FILE_PATH))
@@ -27,18 +25,16 @@ class BankData
 
   def deposit_funds(amount, menu)
     new_balance = balance.to_f + amount.to_f
-    write_new_balance(new_balance.to_s, menu)
+    write_new_balance(new_balance.round(2).to_s, menu)
   end
 
   def withdraw_funds(amount, menu)
-    cash_dispenser = CashDispenser.new
-    bills = amount.to_f.floor
-    coins = (amount.to_f % bills) * 100
-    bill_amounts = cash_dispenser.dispense(bills, BILL_DENOMS)
-    coin_amounts = cash_dispenser.dispense(coins, COIN_DENOMS)
-    menu.withdraw_output(bill_amounts, coin_amounts)
+    dispenser = CashDispenser.new
+    total = (amount.to_f * 100).to_i
+    quantity = dispenser.dispense(total, DENOMINATIONS)
+    menu.withdraw_output(quantity)
     new_balance = balance.to_f - amount.to_f
-    write_new_balance(new_balance.to_s, menu)
+    write_new_balance(new_balance.round(2).to_s, menu)
   end
 
   def write_new_balance(new_balance, menu)
@@ -48,4 +44,8 @@ class BankData
       file.write(accounts.to_json)
     end
   end
+
+  private
+  attr_accessor :name, :accounts
+  
 end
