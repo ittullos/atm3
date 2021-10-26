@@ -8,7 +8,6 @@ class Teller
   end
 
   def customer_valid?
-    puts "customer_name :#{customer_name}"
     bank_data.is_valid?(customer_name)
   end
 
