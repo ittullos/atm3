@@ -11,41 +11,41 @@ class BankData
     @name = customer_name
   end
 
-  def balance
+  def balance(name)
     accounts[name]
   end
 
-  def is_valid?
-    if balance
+  def get_dispenser_output
+    dispenser_output
+  end
+
+  def is_valid?(name)
+    if accounts[name]
       true
     else
       false
     end
   end
 
-  def deposit_funds(amount, menu)
-    new_balance = balance.to_f + amount.to_f
-    write_new_balance(new_balance.round(2).to_s, menu)
+  def deposit_funds(amount, name)
+    balance(name).to_f + amount.to_f
   end
 
-  def withdraw_funds(amount, menu)
+  def withdraw_funds(amount, name)
     dispenser = CashDispenser.new
     total = (amount.to_f * 100).to_i
-    quantity = dispenser.dispense(total, DENOMINATIONS)
-    menu.withdraw_output(quantity)
-    new_balance = balance.to_f - amount.to_f
-    write_new_balance(new_balance.round(2).to_s, menu)
+    @dispenser_output = dispenser.dispense(total, DENOMINATIONS)
+    balance(name).to_f - amount.to_f
   end
 
-  def write_new_balance(new_balance, menu)
-    accounts[name] = new_balance
-    menu.new_account_balance(new_balance)
+  def write_new_balance(new_balance, name)
+    accounts[name] = new_balance.to_s
     File.open(FILE_PATH, 'w') do |file|
       file.write(accounts.to_json)
     end
   end
 
   private
-  attr_accessor :name, :accounts
-  
+  attr_accessor :accounts, :dispenser_output
+
 end

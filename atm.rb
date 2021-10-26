@@ -3,12 +3,12 @@ require "./menu.rb"
 
 menu = Menu.new
 menu.greeting
-menu.get_name
 teller = Teller.new(menu)
+teller.set_name
 
 until teller.customer_valid?
   menu.invalid_customer
-  menu.get_name
+  teller.set_name
 end
 
 until menu.menu_selection == "4"
