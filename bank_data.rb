@@ -28,14 +28,18 @@ class BankData
   end
 
   def deposit_funds(amount, name)
-    balance(name).to_f + amount.to_f
+    new_balance = balance(name).to_f + amount.to_f
+    write_new_balance(new_balance, name)
+    new_balance
   end
 
   def withdraw_funds(amount, name)
     dispenser = CashDispenser.new
     total = (amount.to_f * 100).to_i
     @dispenser_output = dispenser.dispense(total, DENOMINATIONS)
-    balance(name).to_f - amount.to_f
+    new_balance = balance(name).to_f - amount.to_f
+    write_new_balance(new_balance, name)
+    new_balance
   end
 
   def write_new_balance(new_balance, name)

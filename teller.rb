@@ -23,7 +23,6 @@ class Teller
     amount = menu.deposit_prompt
     new_balance = bank_data.deposit_funds(amount,customer_name).round(2)
     menu.new_account_balance(new_balance)
-    bank_data.write_new_balance(new_balance,customer_name)
   end
 
   def make_withdrawal
@@ -32,7 +31,6 @@ class Teller
       new_balance = bank_data.withdraw_funds(amount, customer_name).round(2)
       menu.withdraw_output(bank_data.get_dispenser_output)
       menu.new_account_balance(new_balance)
-      bank_data.write_new_balance(new_balance, customer_name)
     else
       menu.insuff_funds
     end
