@@ -3,32 +3,33 @@ require "./bank_data.rb"
 class Teller
 
   def initialize(menu)
-    @bank_data = BankData.new(menu.name_input)
     @menu = menu
   end
 
   def customer_valid?
-    bank_data.is_valid?(customer_name)
+    balance
   end
 
-  def set_name
-    @customer_name = menu.get_name
+  def customer_setup
+    @name = menu.get_name
+    @bank_data = BankData.new(name)
+    @balance = bank_data.balance(name)
   end
 
   def show_balance
-    menu.show_account_balance(bank_data.balance(customer_name))
+    menu.show_account_balance(bank_data.balance(name))
   end
 
   def make_deposit
     amount = menu.deposit_prompt
-    new_balance = bank_data.deposit_funds(amount,customer_name).round(2)
+    new_balance = bank_data.deposit_funds(amount, name).round(2)
     menu.new_account_balance(new_balance)
   end
 
   def make_withdrawal
     amount = menu.withdraw_prompt
-    if bank_data.balance(customer_name).to_f > amount.to_f
-      new_balance = bank_data.withdraw_funds(amount, customer_name).round(2)
+    if bank_data.balance(name).to_f > amount.to_f
+      new_balance = bank_data.withdraw_funds(amount, name).round(2)
       menu.withdraw_output(bank_data.get_dispenser_output)
       menu.new_account_balance(new_balance)
     else
@@ -37,6 +38,6 @@ class Teller
   end
 
   private
-  attr_accessor :bank_data, :menu, :customer_name
+  attr_reader :bank_data, :menu, :name, :balance
 
 end

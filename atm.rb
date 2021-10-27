@@ -4,11 +4,12 @@ require "./menu.rb"
 menu = Menu.new
 menu.greeting
 teller = Teller.new(menu)
-teller.set_name
 
 until teller.customer_valid?
-  menu.invalid_customer
-  teller.set_name
+  teller.customer_setup
+  unless teller.customer_valid?
+    menu.invalid_customer
+  end
 end
 
 until menu.menu_selection == "4"

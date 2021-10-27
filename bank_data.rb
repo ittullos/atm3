@@ -19,14 +19,6 @@ class BankData
     dispenser_output
   end
 
-  def is_valid?(name)
-    if accounts[name]
-      true
-    else
-      false
-    end
-  end
-
   def deposit_funds(amount, name)
     new_balance = balance(name).to_f + amount.to_f
     write_new_balance(new_balance, name)
@@ -50,6 +42,6 @@ class BankData
   end
 
   private
-  attr_accessor :accounts, :dispenser_output
+  attr_reader :accounts, :dispenser_output
 
 end
