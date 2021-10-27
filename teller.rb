@@ -17,21 +17,21 @@ class Teller
   end
 
   def show_balance
-    menu.show_account_balance(bank_data.balance(name))
+    menu.show_account_balance(balance)
   end
 
   def make_deposit
     amount = menu.deposit_prompt
-    new_balance = bank_data.deposit_funds(amount, name).round(2)
-    menu.new_account_balance(new_balance)
+    @balance = bank_data.deposit_funds(amount, name).round(2)
+    menu.new_account_balance(balance)
   end
 
   def make_withdrawal
     amount = menu.withdraw_prompt
     if bank_data.balance(name).to_f > amount.to_f
-      new_balance = bank_data.withdraw_funds(amount, name).round(2)
+      @balance = bank_data.withdraw_funds(amount, name).round(2)
       menu.withdraw_output(bank_data.get_dispenser_output)
-      menu.new_account_balance(new_balance)
+      menu.new_account_balance(balance)
     else
       menu.insuff_funds
     end

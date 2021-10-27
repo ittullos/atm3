@@ -1,10 +1,10 @@
-BANK_NAME = "Tullos Bank"
+BANK_NAME   = "Tullos Bank"
 DENOM_NAMES = {10000=>"Hundreds",5000=>"Fiftys",2000=>"Twentys",1000=>"Tens",
                500=>"Fives",100=>"Ones",50=>"Half Dollars",25=>"Quarters",
                10=>"Dimes",5=>"Nickels",1=>"Pennys"}
 
 class Menu
-  attr_reader :name_input, :menu_selection
+  attr_reader :menu_selection
 
   def greeting
     puts "\nWelcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
@@ -12,7 +12,7 @@ class Menu
 
   def get_name
     print "\nPlease enter your name: "
-    @name_input = gets.chomp
+    gets.chomp
   end
 
   def invalid_customer
