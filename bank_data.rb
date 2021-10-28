@@ -1,4 +1,4 @@
-require "./cash_dispenser.rb"
+require './cash_dispenser'
 require 'json'
 
 FILE_PATH     = "./tullos_bank.json"
@@ -6,9 +6,8 @@ DENOMINATIONS = [10000,5000,2000,1000,500,100,50,25,10,5,1]
 
 class BankData
 
-  def initialize(customer_name)
+  def initialize
     @accounts = JSON.parse(File.read(FILE_PATH))
-    @name = customer_name
   end
 
   def balance(name)

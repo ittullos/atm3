@@ -4,10 +4,9 @@ DENOM_NAMES = {10000=>"Hundreds",5000=>"Fiftys",2000=>"Twentys",1000=>"Tens",
                10=>"Dimes",5=>"Nickels",1=>"Pennys"}
 
 class Menu
-  attr_reader :menu_selection
 
   def greeting
-    puts "\nWelcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
+    puts "\n    Welcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
   end
 
   def get_name
@@ -16,30 +15,21 @@ class Menu
   end
 
   def invalid_customer
-    puts "That name is invalid.. Please try again."
+    puts "\n  ->That name is invalid.. Please try again."
   end
 
-  def main_menu
+  def display_options
     puts "\nPlease enter a menu selection: "
-    puts "\n1 - Check your balance"
-    puts "\n2 - Make a withdrawal"
-    puts "\n3 - Make a deposit"
-    puts "\n4 - Exit"
-    print "\n  => "
-    @menu_selection = gets.chomp
-  end
-
-  def goodbye
-    puts "\nThank you for choosing #{BANK_NAME}! Have a great day!!"
-  end
-
-  def withdraw_prompt
-    print "\nPlease enter the amount you wish to withdraw: $"
+    puts "\n  'balance' - Check your balance"
+    puts "\n  'withdraw' - Make a withdrawal"
+    puts "\n  'deposit' - Make a deposit"
+    puts "\n  'exit' - Exit"
+    print "\n   => "
     gets.chomp
   end
 
-  def deposit_prompt
-    print "\nPlease enter the amount you wish to deposit: $"
+  def how_much(request)
+    print "\nPlease enter the amount you wish to #{request}: $"
     gets.chomp
   end
 
@@ -47,24 +37,30 @@ class Menu
     puts "\nDispensing cash..."
     amounts.each do |denom, quantity|
       if quantity > 0
-        puts "#{DENOM_NAMES[denom]} -> #{quantity}"
+        puts "  #{DENOM_NAMES[denom]} -> #{quantity}"
       end
     end
   end
 
   def invalid_menu_selection
-    puts "Invalid menu selection. Please try again.."
+    puts "\n  ->Invalid menu selection. Please try again.."
   end
 
   def new_account_balance(new_balance)
-    puts "\nYour new balance is: $#{new_balance}"
+    puts "\n  Your new balance is: $#{new_balance}"
   end
 
   def show_account_balance(balance)
-    puts "\nYour account balance is: $" + balance.to_s
+    puts "\n  Your account balance is: $#{balance}"
   end
 
   def insuff_funds
-    puts "Insufficient funds. Please try again.."
+    puts "\n  ->Insufficient funds. Please try again.."
+  end
+
+  def goodbye
+    puts "\nThank you for choosing #{BANK_NAME}!"
+    puts "      Have a great day!"
+    print "\n"
   end
 end
