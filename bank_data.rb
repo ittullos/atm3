@@ -1,8 +1,7 @@
 require './cash_dispenser'
 require 'json'
 
-FILE_PATH     = "./tullos_bank.json"
-DENOMINATIONS = [10000,5000,2000,1000,500,100,50,25,10,5,1]
+FILE_PATH = "./tullos_bank.json"
 
 class BankData
 
@@ -27,7 +26,7 @@ class BankData
   def withdraw_funds(amount, name)
     dispenser = CashDispenser.new
     total = (amount.to_f * 100).to_i
-    @dispenser_output = dispenser.dispense(total, DENOMINATIONS)
+    @dispenser_output = dispenser.dispense(total)
     new_balance = balance(name).to_f - amount.to_f
     write_new_balance(new_balance.round(2), name)
     new_balance

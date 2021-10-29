@@ -1,3 +1,5 @@
+REQUEST_OPTIONS = {"1"=>"show_account_balance","2"=>"withdraw","3"=>"deposit","4"=>"exit"}
+
 class Teller
 
   def initialize(menu, bank_data)
@@ -6,62 +8,58 @@ class Teller
   end
 
   def work
-    menu.greeting
+    menu.display("greeting","")
     customer_setup
     exit_flag = false
     until exit_flag
       request = get_request
       if request[0] == 'exit'
-        menu.goodbye
+        menu.display("goodbye","")
         exit_flag = true
-      elsif request[0] == 'balance'
-        menu.show_account_balance(balance)
-      elsif request[0] == 'withdraw'
-        make_withdrawal(request[1])
-      elsif request[0] == 'deposit'
-        make_deposit(request[1])
-      elsif request[0] == 'invalid'
-        menu.invalid_menu_selection
+      elsif request[0] == 'deposit' || request[0] == 'withdraw'
+        send(:"#{request[0]}", request[1])
+      else
+        menu.display("#{request[0]}", balance)
       end
     end
   end
 
   def customer_setup
     until balance
-      @name = menu.get_name
+      @name = menu.prompt("get_name","")
       @balance = bank_data.balance(name)
       unless balance
-        menu.invalid_customer
+        menu.display("invalid_customer","")
       end
     end
   end
 
   def get_request
-    request = menu.display_options
-    if request == 'deposit' || request == 'withdraw'
-      amount = menu.how_much(request).to_f
-    elsif request == 'balance' || request == 'exit'
-      amount = 0.0
+    request = menu.prompt("display_options","")
+    if REQUEST_OPTIONS[request]
+      request = REQUEST_OPTIONS[request]
     else
-      request = "invalid"
-      amount = 0.0
+      request = 'invalid_menu_selection'
+    end
+    if request == 'deposit' || request =='withdraw'
+      amount = menu.prompt("how_much", request).to_f
     end
     [request, amount]
   end
 
-  def make_withdrawal(amount)
+  def withdraw(amount)
     if balance.to_f > amount.to_f
       @balance = bank_data.withdraw_funds(amount, name).round(2)
-      menu.withdraw_output(bank_data.get_dispenser_output)
-      menu.new_account_balance(balance)
+      menu.display("withdraw_output",bank_data.get_dispenser_output)
+      menu.display("new_account_balance", balance)
     else
-      menu.insuff_funds
+      menu.siplay("insuff_funds","")
     end
   end
 
-  def make_deposit(amount)
+  def deposit(amount)
     @balance = bank_data.deposit_funds(amount, name).round(2)
-    menu.new_account_balance(balance)
+    menu.display("new_account_balance",balance)
   end
 
   private
