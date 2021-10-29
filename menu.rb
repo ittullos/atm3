@@ -2,7 +2,7 @@ BANK_NAME   = "Tullos Bank"
 
 class Menu
 
-  def prompt(keyword, value)
+  def prompt(keyword, value = "")
     print "\nPlease enter your name: " if keyword == 'get_name'
     if keyword == 'display_options'
       puts "\nPlease enter a menu selection: "
@@ -16,7 +16,7 @@ class Menu
     gets.chomp
   end
 
-  def display(keyword, value)
+  def display(keyword, value = "")
     if keyword == 'greeting'
       puts "\n    Welcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
     elsif keyword == 'withdraw_output'

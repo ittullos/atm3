@@ -8,13 +8,13 @@ class Teller
   end
 
   def work
-    menu.display("greeting","")
+    menu.display("greeting")
     customer_setup
     exit_flag = false
     until exit_flag
       request = get_request
       if request[0] == 'exit'
-        menu.display("goodbye","")
+        menu.display("goodbye")
         exit_flag = true
       elsif request[0] == 'deposit' || request[0] == 'withdraw'
         send(:"#{request[0]}", request[1])
@@ -26,21 +26,17 @@ class Teller
 
   def customer_setup
     until balance
-      @name = menu.prompt("get_name","")
+      @name = menu.prompt("get_name")
       @balance = bank_data.balance(name)
       unless balance
-        menu.display("invalid_customer","")
+        menu.display("invalid_customer")
       end
     end
   end
 
   def get_request
-    request = menu.prompt("display_options","")
-    if REQUEST_OPTIONS[request]
-      request = REQUEST_OPTIONS[request]
-    else
-      request = 'invalid_menu_selection'
-    end
+    request = menu.prompt("display_options")
+    request = REQUEST_OPTIONS.fetch(request, 'invalid_menu_selection')
     if request == 'deposit' || request =='withdraw'
       amount = menu.prompt("how_much", request).to_f
     end
@@ -53,13 +49,13 @@ class Teller
       menu.display("withdraw_output",bank_data.get_dispenser_output)
       menu.display("new_account_balance", balance)
     else
-      menu.siplay("insuff_funds","")
+      menu.display("insuff_funds")
     end
   end
 
   def deposit(amount)
     @balance = bank_data.deposit_funds(amount, name).round(2)
-    menu.display("new_account_balance",balance)
+    menu.display("new_account_balance", balance)
   end
 
   private
