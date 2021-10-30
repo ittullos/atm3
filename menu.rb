@@ -1,38 +1,35 @@
 BANK_NAME   = "Tullos Bank"
+require './options'
+require './goodbye'
+require './greeting'
 
 class Menu
 
   def prompt(keyword, value = "")
-    print "\nPlease enter your name: " if keyword == 'get_name'
+    messages = {"get_name"=>"\nPlease enter your name: ",
+                "how_much"=>"\nPlease enter the amount you wish to #{value}: $"}
+    print messages[keyword] if messages[keyword]
     if keyword == 'display_options'
-      puts "\nPlease enter a menu selection: "
-      puts "\n  1 - Check your balance"
-      puts "\n  2 - Make a withdrawal"
-      puts "\n  3 - Make a deposit"
-      puts "\n  4 - Exit"
-      print "\n   => "
+      puts OPTIONS
+      print "   => "
     end
-    print "\nPlease enter the amount you wish to #{value}: $" if keyword == 'how_much'
     gets.chomp
   end
 
   def display(keyword, value = "")
-    if keyword == 'greeting'
-      puts "\n    Welcome to #{BANK_NAME}" + "\nYou can trust us with your money!"
-    elsif keyword == 'withdraw_output'
+    messages = {"invalid_customer"=>"\n  ->That name is invalid.. Please try again.",
+                "invalid_menu_selection"=>"\n  ->Invalid menu selection. Please try again..",
+                "new_account_balance"=>"\n  Your new balance is: $#{value}",
+                "show_account_balance"=>"\n  Your account balance is: $#{value}",
+                "insuff_funds"=>"\n  ->Insufficient funds. Please try again.."}
+    puts GREETING if keyword == 'greeting'
+    puts GOODBYE if keyword == 'goodbye'
+    puts messages[keyword] if messages[keyword]
+    if keyword == 'withdraw_output'
       puts "\nDispensing cash..."
       value.each do |denom, quantity|
         puts "  #{denom} -> #{quantity}" if quantity > 0
       end
-    elsif keyword == 'goodbye'
-      puts "\nThank you for choosing #{BANK_NAME}!"
-      puts "      Have a great day!"
-      print "\n"
     end
-    puts "\n  ->That name is invalid.. Please try again." if keyword == 'invalid_customer'
-    puts "\n  ->Invalid menu selection. Please try again.." if keyword == 'invalid_menu_selection'
-    puts "\n  Your new balance is: $#{value}" if keyword == 'new_account_balance'
-    puts "\n  Your account balance is: $#{value}" if keyword == 'show_account_balance'
-    puts "\n  ->Insufficient funds. Please try again.." if keyword == 'insuff_funds'
   end
 end
