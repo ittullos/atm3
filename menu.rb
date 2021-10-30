@@ -1,7 +1,5 @@
 BANK_NAME   = "Tullos Bank"
-require './options'
-require './goodbye'
-require './greeting'
+require './menu_messages'
 
 class Menu
 
