@@ -18,8 +18,10 @@ class Teller
         exit_flag = true
       elsif request[0] == 'deposit' || request[0] == 'withdraw'
         send(:"#{request[0]}", request[1])
-      else
+      elsif request[0] == 'show_account_balance'
         menu.display("#{request[0]}", balance)
+      else
+        menu.display("#{request[0]}")
       end
     end
   end
@@ -38,7 +40,7 @@ class Teller
     request = menu.prompt("display_options")
     request = REQUEST_OPTIONS.fetch(request, 'invalid_menu_selection')
     if request == 'deposit' || request =='withdraw'
-      amount = menu.prompt("how_much", request).to_f
+      amount = menu.prompt("how_much").to_f
     end
     [request, amount]
   end
