@@ -1,4 +1,3 @@
-require './cash_dispenser'
 require 'json'
 
 FILE_PATH = "./tullos_bank.json"
@@ -24,9 +23,6 @@ class BankData
   end
 
   def withdraw_funds(amount, name)
-    dispenser = CashDispenser.new
-    total = (amount.to_f * 100).to_i
-    @dispenser_output = dispenser.dispense(total)
     new_balance = balance(name).to_f - amount.to_f
     write_new_balance(new_balance.round(2), name)
     new_balance

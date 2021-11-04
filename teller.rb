@@ -1,10 +1,12 @@
-REQUEST_OPTIONS = {"1"=>"show_account_balance","2"=>"withdraw","3"=>"deposit","4"=>"exit"}
+REQUEST_OPTIONS = {"1"=>"show_account_balance","2"=>"withdraw",
+                   "3"=>"deposit","4"=>"exit"}
 
 class Teller
 
-  def initialize(menu, bank_data)
+  def initialize(menu, bank_data, cash_dispenser)
     @menu = menu
     @bank_data = bank_data
+    @cash_dispenser = cash_dispenser
   end
 
   def work
@@ -48,7 +50,8 @@ class Teller
   def withdraw(amount)
     if balance.to_f > amount.to_f
       @balance = bank_data.withdraw_funds(amount, name).round(2)
-      menu.display("withdraw_output",bank_data.get_dispenser_output)
+      dispenser_output = cash_dispenser.dispense(amount * 100)
+      menu.display("withdraw_output", dispenser_output)
       menu.display("new_account_balance", balance)
     else
       menu.display("insuff_funds")
@@ -61,6 +64,6 @@ class Teller
   end
 
   private
-  attr_reader :bank_data, :menu, :name, :balance
+  attr_reader :bank_data, :menu, :cash_dispenser, :name, :balance
 
 end
