@@ -12,20 +12,14 @@ class BankData
     accounts[name]
   end
 
-  def get_dispenser_output
-    dispenser_output
-  end
-
   def deposit_funds(amount, name)
     new_balance = balance(name).to_f + amount.to_f
     write_new_balance(new_balance.round(2), name)
-    new_balance
   end
 
   def withdraw_funds(amount, name)
     new_balance = balance(name).to_f - amount.to_f
     write_new_balance(new_balance.round(2), name)
-    new_balance
   end
 
   def write_new_balance(new_balance, name)
@@ -33,9 +27,10 @@ class BankData
     File.open(FILE_PATH, 'w') do |file|
       file.write(accounts.to_json)
     end
+    new_balance
   end
 
   private
-  attr_reader :accounts, :dispenser_output
+  attr_reader :accounts
 
 end

@@ -28,6 +28,8 @@ class Teller
     end
   end
 
+  private
+
   def customer_setup
     until balance
       @name = menu.prompt("get_name")
@@ -63,7 +65,6 @@ class Teller
     menu.display("new_account_balance", balance)
   end
 
-  private
   attr_reader :bank_data, :menu, :cash_dispenser, :name, :balance
 
 end
