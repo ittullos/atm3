@@ -1,65 +1,70 @@
-require "./bank_data.rb"
-
-BILL_DENOMS = [100,50,20,10,5,1]
-COIN_DENOMS = [50,25,10,5,1]
-BILL_NAMES = {100=>"Hundreds",50=>"Fiftys",20=>"Twentys",10=>"Tens",5=>"Fives",1=>"Ones"}
-COIN_NAMES = {50=>"Half Dollar",25=>"Quarter",10=>"Dimes",5=>"Nickels",1=>"Pennys"}
+REQUEST_OPTIONS = {"1"=>"show_account_balance","2"=>"withdraw",
+                   "3"=>"deposit","4"=>"exit"}
 
 class Teller
 
-  def initialize(menu)
-    @bank_data = BankData.new
-    @tell_prompt = menu
-    @bank_data.get_data
-
-    until @bank_data.isvalid?
-      @bank_data.get_data
-    end
+  def initialize(menu, bank_data, cash_dispenser)
+    @menu = menu
+    @bank_data = bank_data
+    @cash_dispenser = cash_dispenser
   end
 
-  def show_balance
-    puts "\nYour account balance is: $" + @bank_data.balance
-  end
-
-  def make_deposit
-    hash = @bank_data.data_hash
-    amount = @tell_prompt.deposit_prompt.to_f
-    bal = hash[@bank_data.name].to_f
-    bal += amount
-    hash[@bank_data.name] = bal.round(2).to_s
-    @bank_data.write_new_balance(hash)
-  end
-
-  def make_withdrawal
-    hash = @bank_data.data_hash
-    amount = @tell_prompt.withdraw_prompt.to_f
-    bal = hash[bank_data.name].to_f
-    if bal >= amount
-      @bills = amount.floor
-      @coins = (amount % @bills) * 100
-      bill_hash = dispense(bills, BILL_DENOMS)
-      coin_hash = dispense(coins, COIN_DENOMS)
-      @tell_prompt.withdraw_output(bill_hash, coin_hash, BILL_NAMES, COIN_NAMES)
-      bal -= amount
-      hash[bank_data.name] = bal.round(2).to_s
-      @bank_data.write_new_balance(hash)
-    else
-      puts "Insufficient funds. Please try again.."
+  def work
+    menu.display("greeting")
+    customer_setup
+    exit_flag = false
+    until exit_flag
+      request = get_request
+      if request[0] == 'exit'
+        menu.display("goodbye")
+        exit_flag = true
+      elsif request[0] == 'deposit' || request[0] == 'withdraw'
+        send(:"#{request[0]}", request[1])
+      elsif request[0] == 'show_account_balance'
+        menu.display("#{request[0]}", balance)
+      else
+        menu.display("#{request[0]}")
+      end
     end
   end
 
   private
-  attr_accessor :bills, :coins, :bank_data, :tell_prompt
 
-  def dispense(amount, denominations)
-    data = denominations.inject({}) do |hash, denomination|
-      hash[denomination] = amount.divmod(denomination)
-      amount -= amount.divmod(denomination).first * denomination
-      hash
+  def customer_setup
+    until balance
+      @name = menu.prompt("get_name")
+      @balance = bank_data.balance(name)
+      unless balance
+        menu.display("invalid_customer")
+      end
     end
-    data.map do |key, value|
-      data[key] = value.first
-    end
-    data
   end
+
+  def get_request
+    request = menu.prompt("display_options")
+    request = REQUEST_OPTIONS.fetch(request, 'invalid_menu_selection')
+    if request == 'deposit' || request =='withdraw'
+      amount = menu.prompt("how_much").to_f
+    end
+    [request, amount]
+  end
+
+  def withdraw(amount)
+    if balance.to_f > amount.to_f
+      @balance = bank_data.withdraw_funds(amount, name).round(2)
+      dispenser_output = cash_dispenser.dispense(amount * 100)
+      menu.display("withdraw_output", dispenser_output)
+      menu.display("new_account_balance", balance)
+    else
+      menu.display("insuff_funds")
+    end
+  end
+
+  def deposit(amount)
+    @balance = bank_data.deposit_funds(amount, name).round(2)
+    menu.display("new_account_balance", balance)
+  end
+
+  attr_reader :bank_data, :menu, :cash_dispenser, :name, :balance
+
 end
